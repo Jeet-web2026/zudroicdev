@@ -1,9 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ThemeToggle } from "@/components/ui/themetoggle";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <>
+      <ThemeToggle />
+      <Link href="/login">login</Link>
     </>
   );
 }
