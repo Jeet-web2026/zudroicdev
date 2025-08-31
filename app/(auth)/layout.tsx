@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
+import Logo from "@/public/assets/images/z-logo.png"
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
     return (
@@ -19,9 +20,12 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
                 </div>
                 <div className="flex flex-col gap-5">
                     <Link href="/" className="mx-auto">
-                        <Image src="/assets/images/z-logo.png" height={100} width={100} alt="Logo" />
+                        <Image src={Logo} height={100} width={100} alt="Logo" />
                     </Link>
                     {children}
+                    <div className="text-balance text-center text-sm text-muted-foreground">
+                        By clicking continue, you agree to our <span className="hover:text-primary hover:underline">Terms of service</span> and <span className="hover:text-primary hover:underline">Privacy Policy</span>
+                    </div>
                 </div>
             </section>
         </main>
