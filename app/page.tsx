@@ -1,18 +1,31 @@
+"use client";
+import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/themetoggle";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-export default async function Home() {
-  const session = await auth.api.getSession({
-    headers: await headers()
-  })
+export default function Home() {
+  const router = useRouter();
+  const { data: session } = authClient.useSession();
+  async function signOut() {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/");
+          toast.success('Signedout Successfully!');
+        },
+      },
+    });
+  }
   return (
     <>
       <ThemeToggle />
-      {session ?
-        <p>{session.user.name}</p> : <Link href="/login">login</Link>
-      }
+      {session ? <div>
+        <p>{session.user.name}</p>
+        <Button onClick={signOut}>Logout</Button>
+      </div> : <Link href="/login">login</Link>}
     </>
   );
 }

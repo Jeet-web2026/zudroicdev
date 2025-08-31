@@ -11,12 +11,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GithubIcon, Loader } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
 
 export default function LoginForm() {
     const [githubPending, githubTransition] = useTransition()
+    const [emailPending, emailTransition] = useTransition()
+    const [email, setEmail] = useState("")
+    async function signInwithEmail() {
+        emailTransition(async () => {
+            await authClient.emailOtp
+        })
+    }
     async function signInwithGithub() {
         githubTransition(async () => {
             await authClient.signIn.social({
@@ -36,7 +43,7 @@ export default function LoginForm() {
         <Card>
             <CardHeader>
                 <CardTitle className="text-xl">Welcome back!</CardTitle>
-                <CardDescription>Login with you Github Email Account</CardDescription>
+                <CardDescription>Login with you Github or Email Account</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
                 <Button disabled={githubPending} variant="outline" className="w-full cursor-pointer" onClick={signInwithGithub}>
@@ -58,7 +65,7 @@ export default function LoginForm() {
                 <div className="grid gap-4">
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input type="email" placeholder="e.g. example@gmail.com" />
+                        <Input value={email} onChange={(e) => setEmail(e.target.value)} required type="email" placeholder="e.g. example@gmail.com" />
                     </div>
                     <Button>Contnue with Email</Button>
                 </div>
